@@ -45,7 +45,7 @@ if (contactForm) {
       }
     } catch (err) {
       if (note) {
-        note.innerHTML = `Something went wrong sending that. Email <a href="mailto:Ethanbrooks0333@gmail.com">Ethanbrooks0333@gmail.com</a> directly.`;
+        note.innerHTML = `Something went wrong sending that. Email <a href="mailto:ethanbrooks0333@gmail.com">ethanbrooks0333@gmail.com</a> directly.`;
       }
       if (submitBtn) {
         submitBtn.disabled = false;
