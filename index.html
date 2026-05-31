@@ -316,22 +316,33 @@
             want cleaned up.
           </p>
         </div>
-        <form class="contact-form" aria-label="Contact form">
+        <form
+          class="contact-form"
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          aria-label="Contact form"
+        >
+          <input type="hidden" name="form-name" value="contact">
+          <p hidden>
+            <label>Do not fill this out: <input name="bot-field"></label>
+          </p>
           <label>
             Name
-            <input type="text" name="name" placeholder="Your name">
+            <input type="text" name="name" placeholder="Your name" required>
           </label>
           <label>
             Email
-            <input type="email" name="email" placeholder="you@example.com">
+            <input type="email" name="email" placeholder="you@example.com" required>
           </label>
           <label>
             What do you want cleaned up?
-            <textarea name="message" rows="5" placeholder="Example: leads come in from three places and follow-ups get missed."></textarea>
+            <textarea name="message" rows="5" placeholder="Example: leads come in from three places and follow-ups get missed." required></textarea>
           </label>
-          <button type="submit">Prepare Email</button>
+          <button type="submit">Send Message</button>
           <p class="form-note" id="form-note">
-            This opens a prepared Gmail draft. If it does not open, email
+            Sent straight to me. I reply within one business day. Or email
             <a href="mailto:Ethanbrooks0333@gmail.com">Ethanbrooks0333@gmail.com</a>
             directly.
           </p>

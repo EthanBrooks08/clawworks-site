@@ -14,27 +14,43 @@ if (menuButton && nav) {
 
 const contactForm = document.querySelector(".contact-form");
 if (contactForm) {
-  contactForm.addEventListener("submit", (event) => {
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const data = new FormData(contactForm);
-    const name = String(data.get("name") || "").trim();
-    const email = String(data.get("email") || "").trim();
-    const message = String(data.get("message") || "").trim();
-    const subject = "ClawWorks workflow audit";
-    const body = `Name: ${name}
-Email: ${email}
-
-Admin workflow:
-${message}`;
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=Ethanbrooks0333%40gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const fallback = `mailto:Ethanbrooks0333@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const note = document.querySelector("#form-note");
+    const submitBtn = contactForm.querySelector("button[type=submit]");
+    const originalLabel = submitBtn ? submitBtn.textContent : "";
 
-    if (note) {
-      note.innerHTML = `Opening a prepared Gmail draft. If nothing opens, <a href="${fallback}">click here to use your email app</a> or email <a href="mailto:Ethanbrooks0333@gmail.com">Ethanbrooks0333@gmail.com</a> directly.`;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
     }
 
-    window.open(gmailUrl, "_blank", "noopener");
+    try {
+      const data = new FormData(contactForm);
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(data).toString(),
+      });
+
+      if (!response.ok) throw new Error("submit failed");
+
+      contactForm.reset();
+      if (note) {
+        note.innerHTML = "Thanks — your message is in. I will reply within one business day.";
+      }
+      if (submitBtn) {
+        submitBtn.textContent = "Sent ✓";
+      }
+    } catch (err) {
+      if (note) {
+        note.innerHTML = `Something went wrong sending that. Email <a href="mailto:Ethanbrooks0333@gmail.com">Ethanbrooks0333@gmail.com</a> directly.`;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel || "Send Message";
+      }
+    }
   });
 }
